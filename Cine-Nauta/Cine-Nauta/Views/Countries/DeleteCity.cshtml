@@ -1,0 +1,23 @@
+﻿@model Cine_Nauta.DAL.Entities.City
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="container">
+    <main role="main" class="pb-3 p-3">
+        <h1 class="text-center rounded-pill div-title">Eliminar</h1>
+        <h3>¿Estás seguro que deseas eliminar esta ciudad?</h3>
+        <div>
+            <partial name="../Shared/PartialViews/_CityDetailDelete" />
+            <form asp-action="DeleteCity">
+                <input type="hidden" asp-for="Id" />
+                <br />
+                <input type="submit" asp-route-cityId="@Model?.Id" value="Eliminar" class="btn btn-outline-danger" />
+                <a asp-action="DetailsState" asp-route-stateId="@Model?.State.Id" class="btn btn-outline-success">Regresar</a>
+            </form>
+        </div>
+    </main>
+</div>
+
+
