@@ -1,0 +1,2 @@
+# CineNauta
+Pagina de Cine
