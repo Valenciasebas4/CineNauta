@@ -24,6 +24,7 @@ namespace Cine_Nauta.DAL
             await PopulateGenderAsync();
             await PopulateClassificationAsync();
             await PopulateRoomSeatAsync();
+            await PopulateMoviesAsync();  // Primero, agrega las películas
             await PopulateRolesAsync();
             await PopulateUserAsync("Sebastian", "Londoño", "sebas@yopmail.com", "3142393101", "Barbosa", "1035234145",  UserType.Admin);
             await PopulateUserAsync("Jessica", "Gomez", "jess@yopmail.com", "3188955943", "Barbosa", "1035232261", UserType.User);
@@ -68,6 +69,39 @@ namespace Cine_Nauta.DAL
             }
         }
 
+
+        private async Task PopulateMoviesAsync()
+        {
+            if (!_context.Movies.Any())
+            {
+                _context.Movies.Add(new Movie
+                {
+                    Title = "El Padrino",
+                    Description = "Una película de mafia dirigida por Francis Ford Coppola.",
+                    Director = "Francis Ford Coppola",
+                    LaunchYear = "1972",
+                    Duration = 175,
+                    GenderId = 1,
+                    ClassificationId = 2,
+                    CreatedDate = DateTime.Now
+                }
+                                    );
+                _context.Movies.Add(new Movie
+                {
+                    Title = "Cadena Perpetua",
+                    Description = "Una película carcelaria basada en una novela de Stephen King.",
+                    Director = "Frank Darabont",
+                    LaunchYear = "1994",
+                    Duration = 142,
+                    GenderId = 3,
+                    ClassificationId = 3,
+                    CreatedDate = DateTime.Now
+                }
+                                   );
+
+            }
+
+        }
 
         private async Task PopulateGenderAsync()
         {

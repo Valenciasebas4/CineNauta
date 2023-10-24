@@ -19,6 +19,7 @@ namespace Cine_Nauta.DAL
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Seat> Seats { get; set; }
+        public DbSet<Movie> Movies { get; set; }
 
 
 
@@ -33,7 +34,8 @@ namespace Cine_Nauta.DAL
             modelBuilder.Entity<Classification>().HasIndex(c => c.ClassificationName).IsUnique();
             modelBuilder.Entity<Gender>().HasIndex(c => c.GenderName).IsUnique();
             modelBuilder.Entity<Room>().HasIndex(r => r.NumberRoom).IsUnique();
-            modelBuilder.Entity<Seat>().HasIndex("NumberSeat", "RoomId").IsUnique(); 
+            modelBuilder.Entity<Seat>().HasIndex("NumberSeat", "RoomId").IsUnique();
+            modelBuilder.Entity<Movie>().HasIndex(m => m.Title).IsUnique();
 
 
 
