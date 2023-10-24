@@ -23,6 +23,7 @@ namespace Cine_Nauta.DAL
             await PopulateCountriesStatesCitiesAsync();
             await PopulateGenderAsync();
             await PopulateClassificationAsync();
+            await PopulateRoomSeatAsync();
             await PopulateRolesAsync();
             await PopulateUserAsync("Sebastian", "Londoño", "sebas@yopmail.com", "3142393101", "Barbosa", "1035234145",  UserType.Admin);
             await PopulateUserAsync("Jessica", "Gomez", "jess@yopmail.com", "3188955943", "Barbosa", "1035232261", UserType.User);
@@ -188,7 +189,88 @@ namespace Cine_Nauta.DAL
             }
         }
 
+        private async Task PopulateRoomSeatAsync()
+        {
+            if (!_context.Rooms.Any())
+            {
+                _context.Rooms.Add(
+                    new Room
+                    {
+                        NumberRoom = "UNO",
+                        Capacity = 30,
+                        CreatedDate = DateTime.Now,
+                        TypeRoom = "Sencilla",
+                        Seats = new List<Seat>()
+                        {
+                            
+                            new Seat { Row = "A", NumberSeat = 1,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 2,  Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 3,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 4,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 5, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 1,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 2, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 3, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 5, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 1, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 2, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 3, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 5, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 1, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 2, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 3, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 5, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 1, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 2, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 3, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 5, Busy = false, CreatedDate = DateTime.Now }
+                        }
+                    });
+                _context.Rooms.Add(
+               new Room
+               {
+                   NumberRoom = "DOS",
+                   Capacity = 20,
+                   CreatedDate = DateTime.Now,
+                   TypeRoom = "3D",
+                   Seats = new List<Seat>()
+                        {
+                             
+                            new Seat { Row = "A", NumberSeat = 1,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 2,  Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 3,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 4,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "A", NumberSeat = 5, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 1,  Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 2, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 3, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "B", NumberSeat = 5, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 1, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 2, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 3, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "C", NumberSeat = 5, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 1, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 2, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 3, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "D", NumberSeat = 5, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 1, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 2, Busy = true, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 3, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 4, Busy = false, CreatedDate = DateTime.Now },
+                            new Seat { Row = "E", NumberSeat = 5, Busy = false, CreatedDate = DateTime.Now }
 
+
+                        }
+               });
+            }
+        }
 
     }
 }
