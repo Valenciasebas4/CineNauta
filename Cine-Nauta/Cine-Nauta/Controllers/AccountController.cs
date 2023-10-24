@@ -49,5 +49,9 @@ namespace Cine_Nauta.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult Unauthorized()
+        {
+            return View();
+        }
     }
 }
