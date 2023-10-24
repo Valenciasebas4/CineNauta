@@ -32,6 +32,8 @@ namespace Cine_Nauta.DAL
             modelBuilder.Entity<City>().HasIndex("Name", "StateId").IsUnique(); // Para estos casos, debo crear un índice Compuesto
             modelBuilder.Entity<Classification>().HasIndex(c => c.ClassificationName).IsUnique();
             modelBuilder.Entity<Gender>().HasIndex(c => c.GenderName).IsUnique();
+            modelBuilder.Entity<Room>().HasIndex(r => r.NumberRoom).IsUnique();
+            modelBuilder.Entity<Seat>().HasIndex("NumberSeat", "RoomId").IsUnique(); 
 
 
 

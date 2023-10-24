@@ -1,0 +1,63 @@
+﻿@model Cine_Nauta.DAL.Entities.Room
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />
+
+<div class="container">
+    <main role="main" class="pb-3 p-3">
+        <h1 class="text-center rounded-pill div-title">Detalles Sala</h1>
+        <div>
+            <partial name="../Shared/PartialViews/_RoomDetailDelete" />
+        </div>
+        <div>
+            <br />
+            <a asp-action="AddSeat" asp-route-roomId="@Model?.Id" class="btn btn-outline-primary">Agregar Asiento</a>
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-warning">Editar</a>
+            <a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+        </div>
+        <hr />
+
+         
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row row-cols-6 g-3">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title ">PANTALLA</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        @foreach (var item in Model.Seats)
+                        {
+                            <div class="col">
+                                <div class="card @(item.Busy ? "silla-ocupada" : "silla-disponible")">
+                                    <div class="card-body text-center">
+                                    <h5 class="card-title ">@Html.DisplayFor(modelItem => item.NumberSeat)</h5>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+        
+    </main>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
