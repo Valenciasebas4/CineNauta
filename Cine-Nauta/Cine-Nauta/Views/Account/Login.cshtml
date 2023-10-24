@@ -4,9 +4,9 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="row p-lg-5">
-    <div class="col-md-4 offset-4">
-        <h3>Iniciar Sesión</h3>
+<div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="col-md-4">
+        <h3 class="text-center">Iniciar Sesión</h3>
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -26,7 +26,7 @@
                 </div>
                 <span asp-validation-for="RememberMe" class="text-warning"></span>
             </div>
-            <div class="form-group mt-2">
+            <div class="form-group mt-2 text-center">
                 <input type="submit" value="Iniciar Sesión" class="btn btn-outline-primary" />
                 <a asp-action="Register" class="btn btn-outline-secondary">Registrar nuevo usuario</a>
             </div>
