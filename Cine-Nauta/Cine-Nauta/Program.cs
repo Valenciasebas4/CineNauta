@@ -1,4 +1,6 @@
 using Cine_Nauta.DAL;
+using Cine_Nauta.Helpers;
+using Cine_Nauta.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -19,6 +21,9 @@ builder.Services.AddDbContext<DataBaseContext>(
 
 //Builder para llamar la clase SeederDb.cs|
 builder.Services.AddTransient<SeederDb>();
+
+//Builder para llamar la interfaz IUserHelper.cs
+builder.Services.AddScoped<IUserHelper, UserHelper>();
 
 var app = builder.Build();
 
