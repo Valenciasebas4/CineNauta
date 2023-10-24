@@ -8,7 +8,7 @@ namespace Cine_Nauta.Helpers
         Task<IEnumerable<SelectListItem>> GetDDLSeatsAsync(); //Lista de Sillas
         Task<IEnumerable<SelectListItem>> GetDDLClassificationsAsync(); //Lista de Clasificaciones
         Task<IEnumerable<SelectListItem>> GetDDLGendersAsync(); //Lista de Generos
-       // Task<IEnumerable<SelectListItem>> GetDDLMoviesAsync(); //Lista de Peliculas
+        Task<IEnumerable<SelectListItem>> GetDDLMoviesAsync(); //Lista de Peliculas
 
         Task<IEnumerable<SelectListItem>> GetDDLCountriesAsync();
 

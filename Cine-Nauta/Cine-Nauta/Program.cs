@@ -28,7 +28,7 @@ builder.Services.AddTransient<SeederDb>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 
 //Builder para llamar la interfaz IDropDownListHelper.cs
-//builder.Services.AddScoped<IDropDownListHelper, DropDownListHelper>();
+builder.Services.AddScoped<IDropDownListHelper, DropDownListHelper>();
 
 
 var supportedCultures = new[]

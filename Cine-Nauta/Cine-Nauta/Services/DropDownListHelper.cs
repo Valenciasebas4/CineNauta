@@ -168,5 +168,26 @@ namespace Cine_Nauta.Services
 
             return listCities;
         }
+
+        public async Task<IEnumerable<SelectListItem>> GetDDLMoviesAsync()
+        {
+            List<SelectListItem> listMovies = await _context.Movies
+              .Select(c => new SelectListItem
+              {
+                  Text = c.Title,
+                  Value = c.Id.ToString(),
+              })
+              .OrderBy(c => c.Text)
+              .ToListAsync();
+
+            listMovies.Insert(0, new SelectListItem
+            {
+                Text = "Seleccione una Pelicula...",
+                Value = Guid.Empty.ToString(),
+                Selected = true
+            });
+
+            return listMovies;
+        }
     }
 }
