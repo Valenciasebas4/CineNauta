@@ -17,6 +17,8 @@ namespace Cine_Nauta.DAL
         public DbSet<City> Cities { get; set; }
         public DbSet<Classification> Classifications { get; set; }
         public DbSet<Gender> Genders { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Seat> Seats { get; set; }
 
 
 
