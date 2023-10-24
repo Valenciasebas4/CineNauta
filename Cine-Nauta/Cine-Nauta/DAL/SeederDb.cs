@@ -25,6 +25,7 @@ namespace Cine_Nauta.DAL
             await PopulateClassificationAsync();
             await PopulateRoomSeatAsync();
             await PopulateMoviesAsync();  // Primero, agrega las películas
+            //await PopulateFunctionsAsync();
             await PopulateRolesAsync();
             await PopulateUserAsync("Sebastian", "Londoño", "sebas@yopmail.com", "3142393101", "Barbosa", "1035234145",  UserType.Admin);
             await PopulateUserAsync("Jessica", "Gomez", "jess@yopmail.com", "3188955943", "Barbosa", "1035232261", UserType.User);
@@ -102,7 +103,18 @@ namespace Cine_Nauta.DAL
             }
 
         }
+        /*
+        private async Task PopulateFunctionsAsync()
+        {
+            if (!_context.Functions.Any())
+            {
+                _context.Functions.Add(new Function { MovieId = 1, RoomId = 1, Price = 2500, FunctionDate = DateTime.Now });
+                
 
+            }
+
+        }
+        */
         private async Task PopulateGenderAsync()
         {
             if (!_context.Genders.Any())

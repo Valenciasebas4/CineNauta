@@ -20,6 +20,8 @@ namespace Cine_Nauta.DAL
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Function> Functions { get; set; }
+
 
 
 
@@ -36,6 +38,7 @@ namespace Cine_Nauta.DAL
             modelBuilder.Entity<Room>().HasIndex(r => r.NumberRoom).IsUnique();
             modelBuilder.Entity<Seat>().HasIndex("NumberSeat", "RoomId").IsUnique();
             modelBuilder.Entity<Movie>().HasIndex(m => m.Title).IsUnique();
+            modelBuilder.Entity<Function>().HasIndex("FunctionDate", "RoomId").IsUnique();
 
 
 
