@@ -44,7 +44,9 @@ namespace Cine_Nauta.DAL.Entities
         public Gender Gender { get; set; }
         public Classification Classification { get; set; }
 
-        //public ICollection<Hour> Hours { get; set; } // Propiedad de navegación
+        public List<Function> Functions { get; set; } //Relacion con Function
+
         
+
     }
 }

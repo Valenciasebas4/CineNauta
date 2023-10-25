@@ -64,10 +64,6 @@ namespace Cine_Nauta.Controllers
 
                     };
 
-
-
-
-
                     _context.Add(function);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -97,6 +93,10 @@ namespace Cine_Nauta.Controllers
 
 
 
+
+
+
+
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? Id)
         {
@@ -112,16 +112,11 @@ namespace Cine_Nauta.Controllers
                 Price = function.Price,
                 FunctionDate = function.FunctionDate,
                 CreatedDate = DateTime.Now,
+                MovieId = function.MovieId,
+                RoomId = function.RoomId,
+                Movies = await _dropDownListHelper.GetDDLMoviesAsync(),               
+                Rooms = await _dropDownListHelper.GetDDLRoomsAsync(),
                 
-                Movies = await _dropDownListHelper.GetDDLMoviesAsync(function.Movie.Id),
-                MovieId = function.Movie.Id,
-                Rooms = await _dropDownListHelper.GetDDLRoomsAsync(function.Room.Id),
-                RoomId = function.Room.Id,
-                
-                //Movies = await _dropDownListHelper.GetDDLMoviesAsync(),
-                //Rooms = await _dropDownListHelper.GetDDLRoomsAsync(),
-                
-
 
             };
 
