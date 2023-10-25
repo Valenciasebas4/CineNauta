@@ -171,7 +171,7 @@ namespace Cine_Nauta.Controllers
         {
             if (Id == null) return NotFound();
 
-            // Cargar la película y los datos relacionados (Género y Clasificación)
+            // Cargar la película y los datos relacionados (Género y Clasificación)     
             Function function = await _context.Functions
                 .Include(m => m.Movie)
                 .Include(m => m.Room)
@@ -183,5 +183,34 @@ namespace Cine_Nauta.Controllers
             return View(function);
         }
 
+
+        public async Task<IActionResult> Delete(int? Id)
+        {
+
+            if (Id == null) return NotFound();
+
+            Function function = await _context.Functions
+                .Include(m => m.Movie)
+                .Include(m => m.Room)
+                .FirstOrDefaultAsync(p => p.Id == Id);
+            if (function == null) return NotFound();
+
+            return View(function);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Function functionModel)
+        {
+            Function function = await _context.Functions
+               .FirstOrDefaultAsync(p => p.Id == functionModel.Id);
+
+            _context.Functions.Remove(function);
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
