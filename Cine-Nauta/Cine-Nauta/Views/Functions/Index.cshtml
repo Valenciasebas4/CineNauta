@@ -15,7 +15,7 @@
                     <div class="panel-heading text-center">
                         <h1 class="text-center rounded-pill div-title">Funciones</h1>
                         <p>
-                            <a asp-action="Create" class="btn btn-outline-primary">Crear nuevo país</a>
+                            <a asp-action="Create" class="btn btn-outline-primary">Crear Funcion</a>
                         </p>
                         <hr />
                     </div>
@@ -33,7 +33,7 @@
                                         @Html.DisplayNameFor(model => model.Price)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.CreatedDate)
+                                        @Html.DisplayNameFor(model => model.FunctionDate)
                                     </th>
                                     <th></th>
                                 </tr>
@@ -52,7 +52,7 @@
                                             @Html.DisplayFor(modelItem => item.Price)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                                            @Html.DisplayFor(modelItem => item.FunctionDate)
                                         </td>
                                         <td>
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a>

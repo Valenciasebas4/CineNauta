@@ -21,7 +21,7 @@ builder.Services.AddDbContext<DataBaseContext>(
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
-//Builder para llamar la clase SeederDb.cs|
+//Builder para llamar la clase SeederDb.cs
 builder.Services.AddTransient<SeederDb>();
 
 //Builder para llamar la interfaz IUserHelper.cs

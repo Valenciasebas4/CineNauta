@@ -56,6 +56,7 @@ namespace Cine_Nauta.Controllers
                     Function function = new()
                     {
                         Price= addFunctionViewModel.Price,
+                        FunctionDate = DateTime.Today,
                         CreatedDate = DateTime.Now,
                         Movie = await _context.Movies.FindAsync(addFunctionViewModel.MovieId),
                         Room = await _context.Rooms.FindAsync(addFunctionViewModel.RoomId),
