@@ -1,8 +1,32 @@
-﻿@{
+﻿@model Cine_Nauta.Models.HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<h1>Cine Nauta</h1>
+<h3>Peliculas</h3>
+
+
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="text-center">
+        <h1 class="display-4">Bienvenidos @ViewBag.UserFullName a la administración de Cine Nauta</h1>
+    </div>
+}
+else
+{
+    <div style="text-align: center;">
+        <h3>Peliculas</h3>
+    </div>
+
+    
+}
