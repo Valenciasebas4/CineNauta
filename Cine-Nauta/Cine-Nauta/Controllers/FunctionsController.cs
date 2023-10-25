@@ -55,8 +55,8 @@ namespace Cine_Nauta.Controllers
 
                     Function function = new()
                     {
-                        Price= addFunctionViewModel.Price,
-                        FunctionDate = DateTime.Today,
+                        Price= addFunctionViewModel.Price,   
+                        FunctionDate = addFunctionViewModel.FunctionDate,
                         CreatedDate = DateTime.Now,
                         Movie = await _context.Movies.FindAsync(addFunctionViewModel.MovieId),
                         Room = await _context.Rooms.FindAsync(addFunctionViewModel.RoomId),
@@ -76,7 +76,7 @@ namespace Cine_Nauta.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una función con el mismo nombre.");
+                        ModelState.AddModelError(string.Empty, "Ya existe una función de la pelicula en la misma fecha y sala");
                     }
                     else
                     {
@@ -95,6 +95,82 @@ namespace Cine_Nauta.Controllers
             return View(addFunctionViewModel);
         }
 
+
+
+        // GET: Movies/Edit/5
+        public async Task<IActionResult> Edit(int? Id)
+        {
+
+            if (Id == null) return NotFound();
+
+            Function function = await _context.Functions.FindAsync(Id);
+            if (function == null) return NotFound();
+
+            EditFunctionViewModel editFunctionViewModel = new()
+            {
+                Id = function.Id,
+                Price = function.Price,
+                FunctionDate = function.FunctionDate,
+                CreatedDate = DateTime.Now,
+                
+                Movies = await _dropDownListHelper.GetDDLMoviesAsync(function.Movie.Id),
+                MovieId = function.Movie.Id,
+                Rooms = await _dropDownListHelper.GetDDLRoomsAsync(function.Room.Id),
+                RoomId = function.Room.Id,
+                
+                //Movies = await _dropDownListHelper.GetDDLMoviesAsync(),
+                //Rooms = await _dropDownListHelper.GetDDLRoomsAsync(),
+                
+
+
+            };
+
+            return View(editFunctionViewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? Id, EditFunctionViewModel editFunctionViewModel)
+        {
+            if (Id != editFunctionViewModel.Id) return NotFound();
+
+            try
+            {
+                Function function = await _context.Functions.FindAsync(editFunctionViewModel.Id);
+
+                //Aquí sobreescribo para luego guardar los cambios en BD
+                function.FunctionDate = editFunctionViewModel.FunctionDate;
+                function.Price = editFunctionViewModel.Price;              
+                function.Movie = await _context.Movies.FindAsync(editFunctionViewModel.MovieId);
+                function.Room = await _context.Rooms.FindAsync(editFunctionViewModel.RoomId);
+                function.ModifiedDate = DateTime.Now;
+
+                _context.Update(function);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    ModelState.AddModelError(string.Empty, "Ya existe una función de la pelicula en la misma fecha y sala");
+                else
+                    ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+            }
+            catch (Exception exception)
+            {
+                ModelState.AddModelError(string.Empty, exception.Message);
+            }
+            await FillDropDownListLocation(editFunctionViewModel);
+            return View(editFunctionViewModel);
+        }
+
+        // DropDownListLocation es la lista desplegable de las peliculas y salas
+        private async Task FillDropDownListLocation(EditFunctionViewModel editFunctionViewModel)
+        {
+            editFunctionViewModel.Movies = await _dropDownListHelper.GetDDLMoviesAsync();
+            editFunctionViewModel.Rooms = await _dropDownListHelper.GetDDLRoomsAsync();
+        }
 
     }
 }

@@ -183,11 +183,55 @@ namespace Cine_Nauta.Services
             listMovies.Insert(0, new SelectListItem
             {
                 Text = "Seleccione una Pelicula...",
-                Value = Guid.Empty.ToString(),
+                Value = 0.ToString(),
                 Selected = true
             });
 
             return listMovies;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetDDLMoviesAsync(int movieId)
+        {
+            List<SelectListItem> listMovies = await _context.Movies
+                //.Where(s => s.Country.Id == movieId)
+                .Select(s => new SelectListItem
+                {
+                    Text = s.Title,
+                    Value = s.Id.ToString(),
+                })
+                .OrderBy(s => s.Text)
+                .ToListAsync();
+
+            listMovies.Insert(0, new SelectListItem
+            {
+                Text = "Seleccione una pelicula...",
+                Value = 0.ToString(),
+                Selected = true
+            });
+
+            return listMovies;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetDDLRoomsAsync(int roomId)
+        {
+            List<SelectListItem> listRooms = await _context.Rooms
+                //.Where(s => s.Country.Id == movieId)
+                .Select(s => new SelectListItem
+                {
+                    Text = s.NumberRoom,
+                    Value = s.Id.ToString(),
+                })
+                .OrderBy(s => s.Text)
+                .ToListAsync();
+
+            listRooms.Insert(0, new SelectListItem
+            {
+                Text = "Seleccione una sala...",
+                Value = 0.ToString(),
+                Selected = true
+            });
+
+            return listRooms;
         }
     }
 }

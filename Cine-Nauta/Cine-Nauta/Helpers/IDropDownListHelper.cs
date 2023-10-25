@@ -15,5 +15,8 @@ namespace Cine_Nauta.Helpers
         Task<IEnumerable<SelectListItem>> GetDDLStatesAsync(Guid countryId);
 
         Task<IEnumerable<SelectListItem>> GetDDLCitiesAsync(Guid stateId);
+
+        Task<IEnumerable<SelectListItem>> GetDDLMoviesAsync(int movieId);
+        Task<IEnumerable<SelectListItem>> GetDDLRoomsAsync(int roomId);
     }
 }

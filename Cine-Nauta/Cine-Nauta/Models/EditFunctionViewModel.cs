@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Cine_Nauta.Models
 {
-    public class AddFunctionViewModel : EntityCine
+    public class EditFunctionViewModel : EntityCine
     {
         [Display(Name = "Fecha Función")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -21,10 +21,13 @@ namespace Cine_Nauta.Models
         public int MovieId { get; set; }
         public IEnumerable<SelectListItem> Movies { get; set; }
 
-        [Display(Name = "Sala")]
+
+
+        [Display(Name = "Sala")]         
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public int RoomId { get; set; }
-
         public IEnumerable<SelectListItem> Rooms { get; set; }
+
+
     }
 }

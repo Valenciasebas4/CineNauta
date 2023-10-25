@@ -1,24 +1,26 @@
-﻿@model Cine_Nauta.Models.AddFunctionViewModel
-
+﻿@model Cine_Nauta.Models.EditFunctionViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1 class="text-center">Crear Función</h1>
-<hr />
+<h1 class="text-center">Editar Funciòn</h1>
 
+<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Movies" />
-            <input type="hidden" asp-for="Rooms" />
-
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="FunctionDate" class="control-label"></label>
+                <input asp-for="FunctionDate" class="form-control" value="DateTime.Now"/>
+                <span asp-validation-for="FunctionDate" class="text-danger"></span>
+            </div>
+            
 
             <div class="form-group">
                 <label asp-for="MovieId" class="control-label"></label>
@@ -31,16 +33,14 @@
                 <span asp-validation-for="RoomId" class="text-danger"></span>
             </div>
 
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedDate" />
+            <input type="hidden" asp-for="Movies" />
+            <input type="hidden" asp-for="Rooms" />
+            <br />
             <div class="form-group">
-                <label asp-for="FunctionDate" class="control-label"></label>
-                <input asp-for="FunctionDate" class="form-control" value="DateTime.Now"/>
-                <span asp-validation-for="FunctionDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-2">
-                <input type="submit" value="Crear" class="btn btn-outline-primary" />
-
-                <a asp-area="" asp-controller="Functions" asp-action="Index" class=" btn btn-outline-success">Regresar</a>
+                <input type="submit" value="Guardar" class="btn btn-outline-success" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Regresar</a>
             </div>
         </form>
     </div>
@@ -52,3 +52,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
