@@ -167,5 +167,21 @@ namespace Cine_Nauta.Controllers
             editFunctionViewModel.Rooms = await _dropDownListHelper.GetDDLRoomsAsync();
         }
 
+        public async Task<IActionResult> Details(int? Id)
+        {
+            if (Id == null) return NotFound();
+
+            // Cargar la película y los datos relacionados (Género y Clasificación)
+            Function function = await _context.Functions
+                .Include(m => m.Movie)
+                .Include(m => m.Room)
+                .FirstOrDefaultAsync(p => p.Id == Id);
+            //Movie movie = await _context.Movies.FirstOrDefaultAsync(p => p.Id == Id);
+
+            if (function == null) return NotFound();
+
+            return View(function);
+        }
+
     }
 }
