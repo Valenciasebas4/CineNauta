@@ -3,49 +3,56 @@
     ViewData["Title"] = "Edit";
 }
 
+@* 
 <h1 class="text-center">Editar Función</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditFunction">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FunctionDate" class="control-label"></label>
-                <input asp-for="FunctionDate" class="form-control" value="DateTime.Now"/>
-                <span asp-validation-for="FunctionDate" class="text-danger"></span>
-            </div>
+           
             
-
-            <div class="form-group">
-                <label asp-for="MovieId" class="control-label"></label>
-                <select asp-for="MovieId" asp-items="Model.Movies" class="form-control"></select>
-                <span asp-validation-for="MovieId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoomId" class="control-label"></label>
-                <select asp-for="RoomId" asp-items="Model.Rooms" class="form-control"></select>
-                <span asp-validation-for="RoomId" class="text-danger"></span>
-            </div>
-
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="CreatedDate" />
             <input type="hidden" asp-for="MovieId" />
             <input type="hidden" asp-for="RoomId" />
-            <br />
+
+            <partial name="../Shared/PartialViews/_FunctionCreateEdit" />
+
             <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-outline-success" />
-                <a asp-action="IndexFunction" class="btn btn-outline-secondary">Regresar</a>
+                <a asp-action="Details" asp-route-id="@Model?.MovieId" class="btn btn-outline-secondary">Regresar</a>
             </div>
         </form>
     </div>
 </div>
+*@
 
+
+<div class="container">
+    <main role="main" class="pb-3 p-3">
+        <h1 class="text-center rounded-pill div-title">Editar Función</h1>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="EditState">
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CreatedDate" />
+                    <input type="hidden" asp-for="MovieId" />
+
+                    <partial name="../Shared/PartialViews/_FunctionCreateEdit" />
+
+                    <div class="form-group">
+                        <input type="submit" value="Guardar" class="btn btn-outline-primary" />
+                        <a asp-action="Details" asp-route-id="@Model?.MovieId" class="btn btn-outline-success">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+</div>
 
 @section Scripts {
     @{

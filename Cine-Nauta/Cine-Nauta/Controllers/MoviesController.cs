@@ -5,6 +5,7 @@ using Cine_Nauta.Models;
 using Cine_Nauta.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using System.Drawing;
 
 namespace Cine_Nauta.Controllers
@@ -141,6 +142,7 @@ namespace Cine_Nauta.Controllers
             {
                 Id = movie.Id,
                 Title = movie.Title,
+                LaunchYear = movie.LaunchYear,
                 Description = movie.Description,
                 Director = movie.Director,  
                 Duration = movie.Duration,
@@ -167,6 +169,7 @@ namespace Cine_Nauta.Controllers
                 //Aquí sobreescribo para luego guardar los cambios en BD
                 movie.Title = editMovietViewModel.Title;
                 movie.Description = editMovietViewModel.Description;
+                movie.LaunchYear = editMovietViewModel.LaunchYear;
                 movie.Director = editMovietViewModel.Director;
                 movie.Duration = editMovietViewModel.Duration;
                 movie.Gender = await _context.Genders.FindAsync(editMovietViewModel.GenderId);
@@ -206,27 +209,27 @@ namespace Cine_Nauta.Controllers
         }
 
 
-       
-
-
-       
-
-        
-        
         public async Task<IActionResult> DetailsMovie(int? Id)
         {
-            if (Id == null) return NotFound();
+            if (Id == null || _context.Movies == null)
+            {
+                return NotFound();
+            }
 
-            // Cargar la película y los datos relacionados (Género y Clasificación)
-            Movie movie = await _context.Movies
+            var movie = await _context.Movies
                 .Include(m => m.Gender)
                 .Include(m => m.Classification)
                 .Include(m => m.Functions)
-                .FirstOrDefaultAsync(p => p.Id == Id);
-            
+                .ThenInclude(f => f.Room)  // Cargar la relación Room
+                .FirstOrDefaultAsync(m => m.Id == Id);
 
-            if (movie == null) return NotFound();
 
+
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
             return View(movie);
         }
         
@@ -236,6 +239,9 @@ namespace Cine_Nauta.Controllers
             if (Id == null) return NotFound();
 
             Movie movie = await _context.Movies
+                .Include(m => m.Gender)
+                .Include(m => m.Classification)
+                .Include(m => m.Functions)              
                 .FirstOrDefaultAsync(p => p.Id == Id);
             if (movie == null) return NotFound();
 
@@ -247,6 +253,9 @@ namespace Cine_Nauta.Controllers
         public async Task<IActionResult> Delete(Movie movieModel)
         {
             Movie movie = await _context.Movies
+                .Include(m => m.Gender)
+                .Include(m => m.Classification)
+                .Include(m => m.Functions)
                 .FirstOrDefaultAsync(p => p.Id == movieModel.Id);
 
             _context.Movies.Remove(movie);
@@ -336,24 +345,27 @@ namespace Cine_Nauta.Controllers
             return View(addFunctionViewModel);
         }
 
-        /*
-        public async Task<IActionResult> EditFunction(int? Id)
+        
+        public async Task<IActionResult> EditFunction(int? functionId)
         {
 
-            if (Id == null) return NotFound();
+            if (functionId == null) return NotFound();
 
-            Function function = await _context.Functions.FindAsync(Id);
+            Function function = await _context.Functions
+                .Include(f => f.Movie)
+                .FirstOrDefaultAsync( f => f.Id == functionId);
+
             if (function == null) return NotFound();
 
             EditFunctionViewModel editFunctionViewModel = new()
             {
+                
+                MovieId = function.Movie.Id,
                 Id = function.Id,
                 Price = function.Price,
                 FunctionDate = function.FunctionDate,
-                CreatedDate = DateTime.Now,
-                MovieId = function.MovieId,
+                CreatedDate = DateTime.Now,              
                 RoomId = function.RoomId,
-                Movies = await _dropDownListHelper.GetDDLMoviesAsync(),
                 Rooms = await _dropDownListHelper.GetDDLRoomsAsync(),
 
 
@@ -361,40 +373,50 @@ namespace Cine_Nauta.Controllers
 
             return View(editFunctionViewModel);
         }
-        */
 
+  
+
+
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditFunction(int? Id, EditFunctionViewModel editFunctionViewModel)
+        public async Task<IActionResult> EditFunction(int movieId, EditFunctionViewModel editFunctionViewModel)
         {
-            if (Id != editFunctionViewModel.Id) return NotFound();
+            if (movieId != editFunctionViewModel.MovieId) return NotFound();
 
-            try
+            if (ModelState.IsValid)
             {
-                Function function = await _context.Functions.FindAsync(editFunctionViewModel.Id);
+                try
+                {
+                    Function function = new()
+                    {
+                        Id = editFunctionViewModel.Id,
+                        Price = editFunctionViewModel.Price,
+                        ModifiedDate = editFunctionViewModel.ModifiedDate,
+                        Room = await _context.Rooms.FindAsync(editFunctionViewModel.RoomId),
+                        
+                    };
+                 
 
-                //Aquí sobreescribo para luego guardar los cambios en BD
-                function.FunctionDate = editFunctionViewModel.FunctionDate;
-                function.Price = editFunctionViewModel.Price;
-                function.Movie = await _context.Movies.FindAsync(editFunctionViewModel.MovieId);
-                function.Room = await _context.Rooms.FindAsync(editFunctionViewModel.RoomId);
-                function.ModifiedDate = DateTime.Now;
+                  
+                    _context.Update(function);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new { Id = editFunctionViewModel.MovieId });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                        ModelState.AddModelError(string.Empty, "Ya existe una función de la pelicula en la misma fecha y sala");
+                    else
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
 
-                _context.Update(function);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                if (dbUpdateException.InnerException.Message.Contains("duplicate"))
-                    ModelState.AddModelError(string.Empty, "Ya existe una función de la pelicula en la misma fecha y sala");
-                else
-                    ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
-            }
-            catch (Exception exception)
-            {
-                ModelState.AddModelError(string.Empty, exception.Message);
-            }
+            
             await FillDropDownListLocation(editFunctionViewModel);
             return View(editFunctionViewModel);
         }
@@ -405,7 +427,7 @@ namespace Cine_Nauta.Controllers
             editFunctionViewModel.Movies = await _dropDownListHelper.GetDDLMoviesAsync();
             editFunctionViewModel.Rooms = await _dropDownListHelper.GetDDLRoomsAsync();
         }
-
+        
 
         public async Task<IActionResult> DetailsFunction(int? Id)
         {

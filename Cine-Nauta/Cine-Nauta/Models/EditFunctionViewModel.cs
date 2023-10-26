@@ -19,15 +19,12 @@ namespace Cine_Nauta.Models
         [Display(Name = "Pelicula")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public int MovieId { get; set; }
-        public IEnumerable<SelectListItem> Movies { get; set; }
-
-
+      
 
         [Display(Name = "Sala")]         
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public int RoomId { get; set; }
         public IEnumerable<SelectListItem> Rooms { get; set; }
-
-
+        public IEnumerable<SelectListItem> Movies { get; internal set; }
     }
 }

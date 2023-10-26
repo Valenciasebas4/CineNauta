@@ -17,6 +17,11 @@ namespace Cine_Nauta.Models
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Description { get; set; }
 
+        [Display(Name = "Año de lanzamiento")]
+        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public string LaunchYear { get; set; }
+
         [Display(Name = "Director")]
         [MaxLength(500, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
