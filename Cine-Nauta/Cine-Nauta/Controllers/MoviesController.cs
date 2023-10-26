@@ -24,9 +24,9 @@ namespace Cine_Nauta.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Movies
-                .Include(m => m.Functions)
-                .ToListAsync()
-                );
+                .Include(m => m.Gender)
+                .Include(m => m.Classification)
+                .ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? Id)
@@ -37,9 +37,13 @@ namespace Cine_Nauta.Controllers
             }
 
             var movie = await _context.Movies
+                .Include(m => m.Gender)
+                .Include(m => m.Classification)
                 .Include(m => m.Functions)
-                .Include(m => m.Rooms)
+                .ThenInclude(f => f.Room)  // Cargar la relación Room
                 .FirstOrDefaultAsync(m => m.Id == Id);
+
+          
 
 
             if (movie == null)

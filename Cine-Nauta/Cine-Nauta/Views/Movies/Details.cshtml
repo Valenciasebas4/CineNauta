@@ -1,4 +1,5 @@
-﻿@model Cine_Nauta.DAL.Entities.Movie
+﻿
+@model Cine_Nauta.DAL.Entities.Movie
 @{
     ViewData["Title"] = "Details";
 }
@@ -11,6 +12,7 @@
         <h1 class="text-center rounded-pill div-title">Detalles Pelicula</h1>
 
         <div class="row">
+
             <div class="col">
                 <partial name="../Shared/PartialViews/_MovieDetailDelete" />
                 <br />
@@ -21,6 +23,8 @@
             <div class="col">
                 <hr />
                 <h1 class="text-center rounded-pill div-title">Funciones</h1>
+
+              
                 <table class="table">
                     <thead class="table-dark">
                         <tr>
@@ -54,53 +58,6 @@
                 </table>
             </div>
         </div>
-
-
-
-        @*
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title text-center">Funciones</h3>
-                    </div>
-                    <div class="panel-body">
-                        <table class="table table-borderless table-light table-hover table-responsive" id="Table">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Room.NumberRoom)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().FunctionDate)
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.Functions)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Room.NumberRoom)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.FunctionDate)
-                                        </td>
-                                        <td>
-                                            <a asp-action="EditState" asp-route-stateId="@item.Id" class="btn btn-outline-warning">Editar</a>
-                                            <a asp-action="DetailsState" asp-route-stateId="@item.Id" class="btn btn-outline-info">Detalles</a>
-                                            <a asp-action="DeleteState" asp-route-stateId="@item.Id" class="btn btn-outline-danger">Eliminar</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        *@
     </main>
 </div>
 
