@@ -182,7 +182,8 @@ namespace Cine_Nauta.Controllers
             
             if (countryId == null) return NotFound();
 
-            Country country = await _context.Countries.FirstOrDefaultAsync(c => c.Id == countryId);
+            Country country = await _context.Countries
+                .FirstOrDefaultAsync(c => c.Id == countryId);
 
             if (country == null) return NotFound();
 

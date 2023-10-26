@@ -21,13 +21,35 @@ namespace Cine_Nauta.Controllers
             _dropDownListHelper = dropDownListHelper;
         }
 
-        
         public async Task<IActionResult> Index()
         {
             return View(await _context.Movies
-                //.Include(m => m.Hours)// Incluye los horarios relacionados
-                .ToListAsync());
+                .Include(m => m.Functions)
+                .ToListAsync()
+                );
         }
+
+        public async Task<IActionResult> Details(int? Id)
+        {
+            if (Id == null || _context.Movies == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movies
+                .Include(m => m.Functions)
+                .Include(m => m.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == Id);
+
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            return View(movie);
+
+        }
+
 
         public async Task<IActionResult> Movies()
         {
@@ -72,9 +94,6 @@ namespace Cine_Nauta.Controllers
 
 
                     };
-
-
-
 
 
                     _context.Add(movie);
@@ -183,21 +202,7 @@ namespace Cine_Nauta.Controllers
         }
 
 
-        public async Task<IActionResult> Details(int? Id)
-        {
-            if (Id == null) return NotFound();
-
-            // Cargar la película y los datos relacionados (Género y Clasificación)
-            Movie movie = await _context.Movies
-                .Include(m => m.Gender)
-                .Include(m => m.Classification)
-                .FirstOrDefaultAsync(p => p.Id == Id);
-            //Movie movie = await _context.Movies.FirstOrDefaultAsync(p => p.Id == Id);
-
-            if (movie == null) return NotFound();
-
-            return View(movie);
-        }
+       
 
 
        
@@ -247,5 +252,207 @@ namespace Cine_Nauta.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+        #region Function
+
+        public async Task<IActionResult> IndexFunction()
+        {
+
+            return View(await _context.Functions
+                 .Include(c => c.Movie)
+                 .Include(c => c.Room)
+                 .ToListAsync());
+        }
+
+
+        public async Task<IActionResult> AddFunction(int movieId)
+        {
+
+            if (movieId == null) return NotFound();
+
+            Movie movie = await _context.Movies
+                .FirstOrDefaultAsync(p => p.Id == movieId);
+
+            if (movie == null) return NotFound();
+
+
+
+            AddFunctionViewModel addFunctionViewModel = new()
+            {
+                MovieId = movie.Id,
+                Rooms = await _dropDownListHelper.GetDDLRoomsAsync(),
+            };
+
+            return View(addFunctionViewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFunction(AddFunctionViewModel addFunctionViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Function function = new()
+                    {
+                        Price = addFunctionViewModel.Price,
+                        FunctionDate = addFunctionViewModel.FunctionDate,
+                        CreatedDate = DateTime.Now,
+                        Movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == addFunctionViewModel.MovieId),
+                        Room = await _context.Rooms.FindAsync(addFunctionViewModel.RoomId),
+
+
+                    };
+
+                    _context.Add(function);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe una función de la pelicula en la misma fecha y sala");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+
+            addFunctionViewModel.Rooms = await _dropDownListHelper.GetDDLRoomsAsync();
+            return View(addFunctionViewModel);
+        }
+
+        /*
+        public async Task<IActionResult> EditFunction(int? Id)
+        {
+
+            if (Id == null) return NotFound();
+
+            Function function = await _context.Functions.FindAsync(Id);
+            if (function == null) return NotFound();
+
+            EditFunctionViewModel editFunctionViewModel = new()
+            {
+                Id = function.Id,
+                Price = function.Price,
+                FunctionDate = function.FunctionDate,
+                CreatedDate = DateTime.Now,
+                MovieId = function.MovieId,
+                RoomId = function.RoomId,
+                Movies = await _dropDownListHelper.GetDDLMoviesAsync(),
+                Rooms = await _dropDownListHelper.GetDDLRoomsAsync(),
+
+
+            };
+
+            return View(editFunctionViewModel);
+        }
+        */
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFunction(int? Id, EditFunctionViewModel editFunctionViewModel)
+        {
+            if (Id != editFunctionViewModel.Id) return NotFound();
+
+            try
+            {
+                Function function = await _context.Functions.FindAsync(editFunctionViewModel.Id);
+
+                //Aquí sobreescribo para luego guardar los cambios en BD
+                function.FunctionDate = editFunctionViewModel.FunctionDate;
+                function.Price = editFunctionViewModel.Price;
+                function.Movie = await _context.Movies.FindAsync(editFunctionViewModel.MovieId);
+                function.Room = await _context.Rooms.FindAsync(editFunctionViewModel.RoomId);
+                function.ModifiedDate = DateTime.Now;
+
+                _context.Update(function);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    ModelState.AddModelError(string.Empty, "Ya existe una función de la pelicula en la misma fecha y sala");
+                else
+                    ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+            }
+            catch (Exception exception)
+            {
+                ModelState.AddModelError(string.Empty, exception.Message);
+            }
+            await FillDropDownListLocation(editFunctionViewModel);
+            return View(editFunctionViewModel);
+        }
+
+        // DropDownListLocation es la lista desplegable de las peliculas y salas
+        private async Task FillDropDownListLocation(EditFunctionViewModel editFunctionViewModel)
+        {
+            editFunctionViewModel.Movies = await _dropDownListHelper.GetDDLMoviesAsync();
+            editFunctionViewModel.Rooms = await _dropDownListHelper.GetDDLRoomsAsync();
+        }
+
+
+        public async Task<IActionResult> DetailsFunction(int? Id)
+        {
+            if (Id == null) return NotFound();
+
+            // Cargar la película y los datos relacionados (Género y Clasificación)     
+            Function function = await _context.Functions
+                .Include(m => m.Movie)
+                .Include(m => m.Room)
+                .FirstOrDefaultAsync(p => p.Id == Id);
+            //Movie movie = await _context.Movies.FirstOrDefaultAsync(p => p.Id == Id);
+
+            if (function == null) return NotFound();
+
+            return View(function);
+        }
+
+
+        public async Task<IActionResult> DeleteFunction(int? Id)
+        {
+
+            if (Id == null) return NotFound();
+
+            Function function = await _context.Functions
+                .Include(m => m.Movie)
+                .Include(m => m.Room)
+                .FirstOrDefaultAsync(p => p.Id == Id);
+            if (function == null) return NotFound();
+
+            return View(function);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Function functionModel)
+        {
+            Function function = await _context.Functions
+               .FirstOrDefaultAsync(p => p.Id == functionModel.Id);
+
+            _context.Functions.Remove(function);
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+
+
+
+
     }
 }

@@ -3,63 +3,132 @@
     ViewData["Title"] = "Details";
 }
 
-<h1 class="text-center">Detalles</h1>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Director)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Director)
-        </dd>
-                <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender.GenderName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender.GenderName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Classification.ClassificationName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Classification.ClassificationName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedDate)
-        </dd>
-    </dl>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />
+
+<div class="container">
+    <main role="main" class="pb-3 p-3">
+        <h1 class="text-center rounded-pill div-title">Detalles Pelicula</h1>
+
+        <div class="row">
+            <div class="col">
+                <partial name="../Shared/PartialViews/_MovieDetailDelete" />
+                <br />
+                <a asp-action="AddFunction" asp-route-movieId="@Model?.Id" class="btn btn-outline-primary">Agregar Función</a>
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-warning">Editar</a>
+                <a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+            </div>
+            <div class="col">
+                <hr />
+                <h1 class="text-center rounded-pill div-title">Funciones</h1>
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Room.NumberRoom)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().FunctionDate)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Functions)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Room.NumberRoom)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FunctionDate)
+                                </td>
+                                <td>
+                                    <a asp-action="EditState" asp-route-stateId="@item.Id" class="btn btn-outline-warning">Editar</a>
+                                    <a asp-action="DetailsState" asp-route-stateId="@item.Id" class="btn btn-outline-info">Detalles</a>
+                                    <a asp-action="DeleteState" asp-route-stateId="@item.Id" class="btn btn-outline-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        @*
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Funciones</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-borderless table-light table-hover table-responsive" id="Table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Room.NumberRoom)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().FunctionDate)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Functions)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Room.NumberRoom)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FunctionDate)
+                                        </td>
+                                        <td>
+                                            <a asp-action="EditState" asp-route-stateId="@item.Id" class="btn btn-outline-warning">Editar</a>
+                                            <a asp-action="DetailsState" asp-route-stateId="@item.Id" class="btn btn-outline-info">Detalles</a>
+                                            <a asp-action="DeleteState" asp-route-stateId="@item.Id" class="btn btn-outline-danger">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        *@
+    </main>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-Id="@Model?.Id" class="btn btn-outline-warning">Editar Pelicula</a>
-    <a asp-action="Index" class="btn btn-outline-success">Regresar</a>
-</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Table').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                "aLengthMenu": [
+                    [5, 25, 50, 100, 200, -1],
+                    [5, 25, 50, 100, 200, "Todos"]
+                ]
+            });
+        });
+    </script>
+    }
+
+
+
+
+

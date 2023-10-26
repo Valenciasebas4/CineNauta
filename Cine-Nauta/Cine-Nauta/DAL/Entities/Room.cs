@@ -22,6 +22,8 @@ namespace Cine_Nauta.DAL.Entities
         [Display(Name = "Asiento")]
         public ICollection<Seat> Seats { get; set; } // Colección de silla para la sala
 
-        public List<Function> Functions { get; set; } //Relacion con Function
+        public ICollection<Function> Functions { get; set; } //Relacion con Function
+
+        public Movie Movie { get; set; }
     }
 }

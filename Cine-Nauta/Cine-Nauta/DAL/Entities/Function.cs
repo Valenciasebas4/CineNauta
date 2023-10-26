@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
 namespace Cine_Nauta.DAL.Entities
 {
     public class Function : EntityCine
     {
-        
-
-        
+       
 
         [Display(Name = "Fecha Función")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -17,18 +16,17 @@ namespace Cine_Nauta.DAL.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public decimal Price { get; set; }
 
-
-
         [Display(Name = "Pelicula")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public int MovieId { get; set; }
+        [JsonIgnore]
+        public Movie Movie { get; set; } //Relacion con Pelicula
 
         [Display(Name = "Sala")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public int RoomId { get; set; }
+        public Room Room { get; set; } //Relacion con Sala
 
-        public Movie Movie { get; set; }
-        public Room Room { get; set; }
+
+
 
     }
 }

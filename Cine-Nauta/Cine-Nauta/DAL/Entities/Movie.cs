@@ -46,7 +46,7 @@ namespace Cine_Nauta.DAL.Entities
 
         public ICollection<Function> Functions { get; set; } //Relacion con Function
 
-        
+        public ICollection<Room> Rooms { get; set; } //Relacion con Function
 
     }
 }
