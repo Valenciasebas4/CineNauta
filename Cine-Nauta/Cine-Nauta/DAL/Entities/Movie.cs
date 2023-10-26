@@ -44,7 +44,7 @@ namespace Cine_Nauta.DAL.Entities
         public Gender Gender { get; set; }
         public Classification Classification { get; set; }
 
-        public List<Function> Functions { get; set; } //Relacion con Function
+        public ICollection<Function> Functions { get; set; } //Relacion con Function
 
         
 

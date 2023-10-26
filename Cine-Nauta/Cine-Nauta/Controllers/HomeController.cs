@@ -18,39 +18,14 @@ namespace Cine_Nauta.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
-        {
-           
+       
 
-            IQueryable<Movie> query = _context.Movies
-                .Include(p => p.Functions)
-                .ThenInclude(pc => pc.FunctionDate);
-
-
-
-            
-
-            //Begins New change
-            HomeViewModel homeViewModel = new()
-            {
-                Movies = await query.ToListAsync(),
-                
-            };
-
-            
-           
-
-            return View(homeViewModel);
-            //Ends New change
-        }
-
-
-        /*
+        
         public IActionResult Index()
         {
             return View();
         }
-        */
+        
         public IActionResult Privacy()
         {
             return View();

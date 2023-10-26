@@ -7,8 +7,7 @@ namespace Cine_Nauta.Models
 {
     public class AddMovieViewModel : EditMovieViewModel
     {
-     
-
+    
         [Display(Name = "Titulo")]
         [MaxLength(80, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -27,7 +26,6 @@ namespace Cine_Nauta.Models
         [Display(Name = "Duracion")]       
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public int Duration { get; set; }
-
 
         [Display(Name = "Genero")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]

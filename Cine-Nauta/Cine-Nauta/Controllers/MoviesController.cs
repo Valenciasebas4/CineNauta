@@ -29,6 +29,14 @@ namespace Cine_Nauta.Controllers
                 .ToListAsync());
         }
 
+        public async Task<IActionResult> Movies()
+        {
+            return View(await _context.Movies
+                .Include(m => m.Functions)
+                //.Include(m => m.Hours)// Incluye los horarios relacionados
+                .ToListAsync());
+        }
+
         public async Task<IActionResult> Create()
         {
             
@@ -191,6 +199,28 @@ namespace Cine_Nauta.Controllers
             return View(movie);
         }
 
+
+       
+
+        
+        
+        public async Task<IActionResult> DetailsMovie(int? Id)
+        {
+            if (Id == null) return NotFound();
+
+            // Cargar la película y los datos relacionados (Género y Clasificación)
+            Movie movie = await _context.Movies
+                .Include(m => m.Gender)
+                .Include(m => m.Classification)
+                .Include(m => m.Functions)
+                .FirstOrDefaultAsync(p => p.Id == Id);
+            
+
+            if (movie == null) return NotFound();
+
+            return View(movie);
+        }
+        
         public async Task<IActionResult> Delete(int? Id)
         {
             

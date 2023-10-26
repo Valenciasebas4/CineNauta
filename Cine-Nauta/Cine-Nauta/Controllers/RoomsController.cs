@@ -63,7 +63,7 @@ namespace Cine_Nauta.Controllers
             if (ModelState.IsValid)
             {
 
-                // Verificar si ya existe un el Número de la sala
+                // Verificar si ya existe el Número de la sala
                 bool Exists = await _context.Rooms
                     .AnyAsync(v => v.NumberRoom == room.NumberRoom );
 
@@ -130,19 +130,19 @@ namespace Cine_Nauta.Controllers
                     room.ModifiedDate = DateTime.Now;
                     _context.Update(room);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException dbUpdateException)
                 {
-                    if (!RoomExists(room.Id))
-                    {
-                        return NotFound();
-                    }
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                        ModelState.AddModelError(string.Empty, "Ya existe una sala con el mismo nombre.");
                     else
-                    {
-                        throw;
-                    }
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
                 }
-                return RedirectToAction(nameof(Index));
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
             }
             return View(room);
         }
