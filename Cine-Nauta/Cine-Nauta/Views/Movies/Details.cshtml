@@ -34,6 +34,9 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().FunctionDate)
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Price)
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -46,6 +49,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.FunctionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
                                 </td>
                                 <td>
                                     <a asp-action="EditFunction" asp-route-functionId="@item.Id" class="btn btn-outline-warning">Editar</a>
