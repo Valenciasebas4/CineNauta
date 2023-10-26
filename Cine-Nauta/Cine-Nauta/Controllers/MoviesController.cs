@@ -392,6 +392,7 @@ namespace Cine_Nauta.Controllers
                     {
                         Id = editFunctionViewModel.Id,
                         Price = editFunctionViewModel.Price,
+                        FunctionDate = editFunctionViewModel.FunctionDate,
                         ModifiedDate = editFunctionViewModel.ModifiedDate,
                         Room = await _context.Rooms.FindAsync(editFunctionViewModel.RoomId),
                         
@@ -429,15 +430,15 @@ namespace Cine_Nauta.Controllers
         }
         
 
-        public async Task<IActionResult> DetailsFunction(int? Id)
+        public async Task<IActionResult> DetailsFunction(int? functionId)
         {
-            if (Id == null) return NotFound();
+            if (functionId == null) return NotFound();
 
             // Cargar la película y los datos relacionados (Género y Clasificación)     
             Function function = await _context.Functions
                 .Include(m => m.Movie)
                 .Include(m => m.Room)
-                .FirstOrDefaultAsync(p => p.Id == Id);
+                .FirstOrDefaultAsync(p => p.Id == functionId);
             //Movie movie = await _context.Movies.FirstOrDefaultAsync(p => p.Id == Id);
 
             if (function == null) return NotFound();
