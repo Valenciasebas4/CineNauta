@@ -223,9 +223,6 @@ namespace Cine_Nauta.Controllers
                 .ThenInclude(f => f.Room)  // Cargar la relación Room
                 .FirstOrDefaultAsync(m => m.Id == Id);
 
-
-
-
             if (movie == null)
             {
                 return NotFound();
@@ -248,21 +245,17 @@ namespace Cine_Nauta.Controllers
             return View(movie);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Movie movieModel)
+        public async Task<IActionResult> DeleteConfirmed(int Id)
         {
-            Movie movie = await _context.Movies
-                .Include(m => m.Gender)
-                .Include(m => m.Classification)
-                .Include(m => m.Functions)
-                .FirstOrDefaultAsync(p => p.Id == movieModel.Id);
+            if (_context.Movies == null)
+                return Problem("Entity set 'DataBaseContext.Movies' is null.");
 
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
+            var movie = await _context.Movies.FindAsync(Id); //Select * From Movies Where Id = '1'
+            if (movie != null) _context.Movies.Remove(movie);
 
-            
-
+            await _context.SaveChangesAsync(); //Delete From Movies where Id = '1'
             return RedirectToAction(nameof(Index));
         }
 
@@ -447,33 +440,34 @@ namespace Cine_Nauta.Controllers
         }
 
 
-        public async Task<IActionResult> DeleteFunction(int? Id)
+        public async Task<IActionResult> DeleteFunction(int? functionId)
         {
 
-            if (Id == null) return NotFound();
+            if (functionId == null) return NotFound();
 
             Function function = await _context.Functions
                 .Include(m => m.Movie)
                 .Include(m => m.Room)
-                .FirstOrDefaultAsync(p => p.Id == Id);
+                .FirstOrDefaultAsync(p => p.Id == functionId);
             if (function == null) return NotFound();
 
             return View(function);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("DeleteFunction")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Function functionModel)
+        public async Task<IActionResult> DeleteFunctionConfirmed(int? functionId)
         {
-            Function function = await _context.Functions
-               .FirstOrDefaultAsync(p => p.Id == functionModel.Id);
+            if (_context.Functions == null) return Problem("Entity set 'DataBaseContext.Functions' is null.");
 
-            _context.Functions.Remove(function);
+            Function function = await _context.Functions
+                .Include(m => m.Movie)
+               .FirstOrDefaultAsync(p => p.Id == functionId);
+
+            if (function != null) _context.Functions.Remove(function);
             await _context.SaveChangesAsync();
 
-
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = function.Movie.Id });
         }
         #endregion
 

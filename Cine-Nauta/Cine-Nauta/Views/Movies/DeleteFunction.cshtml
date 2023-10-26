@@ -13,8 +13,8 @@
 
     <form asp-action="DeleteFunction">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Eliminar" class="btn btn-outline-danger" />
-        <a asp-action="IndexFunction" class="btn btn-outline-secondary">Regresar</a>
+        <input type="submit" asp-route-functionId="@Model?.Id" value="Eliminar" class="btn btn-outline-danger" />
+        <a asp-action="Details" asp-route-id="@Model?.Movie.Id" class="btn btn-outline-secondary">Regresar</a>
     </form>
 </div>
 
