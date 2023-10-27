@@ -32,6 +32,9 @@
                                 @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Room.NumberRoom)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Room.TypeRoom)
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().FunctionDate)
                             </th>
                             <th>
@@ -46,6 +49,9 @@
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Room.NumberRoom)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Room.TypeRoom)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.FunctionDate)

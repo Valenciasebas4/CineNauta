@@ -122,7 +122,15 @@ namespace Cine_Nauta.DAL
                         {
                             RoomId = 1,
                             Price = 2500,
-                            FunctionDate = new DateTime(2023,10,27,4,00,0),
+                            FunctionDate = new DateTime(2023,10,27,13,00,0),
+                            CreatedDate = DateTime.Now,
+
+                        },
+                        new Function
+                        {
+                            RoomId = 1,
+                            Price = 2500,
+                            FunctionDate = new DateTime(2023,10,27,18,00,0),
                             CreatedDate = DateTime.Now,
 
                         },
@@ -136,7 +144,7 @@ namespace Cine_Nauta.DAL
                         },
                     }
                 }
-                                    );
+                );
                 _context.Movies.Add(new Movie
                 {
                     Title = "Cadena Perpetua",
@@ -146,9 +154,28 @@ namespace Cine_Nauta.DAL
                     Duration = 142,
                     GenderId = 3,
                     ClassificationId = 3,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    Functions = new List<Function>()
+                    {
+                        new Function
+                        {
+                            RoomId = 1,
+                            Price = 2500,
+                            FunctionDate = new DateTime(2023,10,27,15,00,0),
+                            CreatedDate = DateTime.Now,
+
+                        },
+                        new Function
+                        {
+                            RoomId = 2,
+                            Price = 3800,
+                            FunctionDate = new DateTime(2023,10,30,11,00,0),
+                            CreatedDate = DateTime.Now,
+
+                        },
+                    }
                 }
-                                   );
+                );
 
             }
 

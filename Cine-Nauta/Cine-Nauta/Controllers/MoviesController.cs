@@ -44,8 +44,28 @@ namespace Cine_Nauta.Controllers
                 .ThenInclude(f => f.Room)  // Cargar la relación Room
                 .FirstOrDefaultAsync(m => m.Id == Id);
 
-          
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            return View(movie);
 
+        }
+
+
+        public async Task<IActionResult> DetailsMovie(int? Id)
+        {
+            if (Id == null || _context.Movies == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movies
+                .Include(m => m.Gender)
+                .Include(m => m.Classification)
+                .Include(m => m.Functions)
+                .ThenInclude(f => f.Room)  // Cargar la relación Room
+                .FirstOrDefaultAsync(m => m.Id == Id);
 
             if (movie == null)
             {
@@ -209,26 +229,7 @@ namespace Cine_Nauta.Controllers
         }
 
 
-        public async Task<IActionResult> DetailsMovie(int? Id)
-        {
-            if (Id == null || _context.Movies == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _context.Movies
-                .Include(m => m.Gender)
-                .Include(m => m.Classification)
-                .Include(m => m.Functions)
-                .ThenInclude(f => f.Room)  // Cargar la relación Room
-                .FirstOrDefaultAsync(m => m.Id == Id);
-
-            if (movie == null)
-            {
-                return NotFound();
-            }
-            return View(movie);
-        }
+       
         
         public async Task<IActionResult> Delete(int? Id)
         {

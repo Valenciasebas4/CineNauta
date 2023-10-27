@@ -1,53 +1,243 @@
 ﻿@model Cine_Nauta.DAL.Entities.Movie
 @{
+    ViewData["Title"] = "Detalles";
+}
+
+<div class="movie-details-container">
+    <div class="movie-info">
+        <h1 class="movie-title">@Model.Title</h1>
+        <div class="movie-description">@Model.Description</div>
+        <div class="movie-details">
+            <div class="detail">
+                <span class="label">Director:</span>
+                <span class="value">@Model.Director</span>
+            </div>
+            <div class="detail">
+                <span class="label">Año de lanzamiento:</span>
+                <span class="value">@Model.LaunchYear</span>
+            </div>
+            <div class="detail">
+                <span class="label">Duración:</span>
+                <span class="value">@Model.Duration</span> minutos
+            </div>
+            <div class="detail">
+                <span class="label">Género:</span>
+                <span class="value">@Model.Gender.GenderName</span>
+            </div>
+            <div class="detail">
+                <span class="label">Clasificación:</span>
+                <span class="value">@Model.Classification.ClassificationName</span>
+            </div>
+            <div class="back-button">
+                <a asp-action="Movies" class="btn btn-outline-success">Regresar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="functions">
+        <h2 class="functions-title text-center">Funciones</h2>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sala</th>
+                    <th>Tipo de Sala</th>
+                    <th>Fecha de Función</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Functions)
+                {
+                    <tr>
+                        <td>@item.Room.NumberRoom</td>
+                        <td>@item.Room.TypeRoom</td>
+                        <td>@item.FunctionDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>$@item.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+
+    @*
+    <form asp-action="ReserveFunction" method="post">
+    <div class="function-selection">
+    <label for="functionId">Selecciona una función:</label>
+    <select name="functionId" id="functionId">
+    <option value="">-- Selecciona una función --</option>
+    @foreach (var item in Model.Functions)
+    {
+    <option value="@item.Id">@item.Room.NumberRoom - @item.Room.TypeRoom - @item.FunctionDate.ToString("dd/MM/yyyy HH:mm") - $@item.Price</option>
+    }
+    </select>
+    </div>
+
+    <div class="seat-selection">
+    <!-- Aquí debes mostrar el mapa de asientos para la función seleccionada -->
+    </div>
+
+    <button type="submit" class="btn btn-primary">Reservar función</button>
+    </form>
+
+    *@
+
+</div>
+
+
+
+<style>
+
+    .movie-details-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .movie-info {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .movie-title {
+        font-size: 24px;
+    }
+
+    .movie-description {
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .movie-details {
+        margin-top: 20px;
+    }
+
+    .detail {
+        margin-bottom: 10px;
+    }
+
+    .label {
+        font-weight: bold;
+    }
+
+    .functions {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .functions-title {
+        font-size: 20px;
+        margin-bottom: 10px;      
+    }
+
+    .table {
+        width: 100%;
+    }
+
+</style>
+
+@* 
+@model Cine_Nauta.DAL.Entities.Movie
+@{
     ViewData["Title"] = "Details";
 }
 
 <h1 class="text-center">Detalles</h1>
 
-<div>
+<div class="row">
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Director)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Director)
-        </dd>
-                <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender.GenderName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender.GenderName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Classification.ClassificationName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Classification.ClassificationName)
-        </dd>
+    <div class="col">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LaunchYear)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LaunchYear)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Director)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Director)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Duration)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Duration)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Gender.GenderName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Gender.GenderName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Classification.ClassificationName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Classification.ClassificationName)
+            </dd>
+        </dl>
+    </div>
+    <div class="col">
 
-    </dl>
+        <h2 class="text-center">Funciones</h2>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Room.NumberRoom)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Room.TypeRoom)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().FunctionDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Functions.FirstOrDefault().Price)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Functions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Room.NumberRoom)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Room.TypeRoom)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FunctionDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
 </div>
 
 <div>   
     <a asp-action="Movies" class="btn btn-outline-success">Regresar</a>
 </div>
+*@
