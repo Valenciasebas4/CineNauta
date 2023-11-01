@@ -4,6 +4,7 @@ using Cine_Nauta.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cine_Nauta.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231101202519_NewTableTemporalSaleandReservation")]
+    partial class NewTableTemporalSaleandReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -398,9 +400,6 @@ namespace Cine_Nauta.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("int");
-
                     b.Property<float>("Quantity")
                         .HasColumnType("real");
 
@@ -410,8 +409,6 @@ namespace Cine_Nauta.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FunctionId");
-
-                    b.HasIndex("MovieId");
 
                     b.HasIndex("UserId");
 
@@ -747,17 +744,11 @@ namespace Cine_Nauta.Migrations
                         .WithMany()
                         .HasForeignKey("FunctionId");
 
-                    b.HasOne("Cine_Nauta.DAL.Entities.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId");
-
                     b.HasOne("Cine_Nauta.DAL.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Function");
-
-                    b.Navigation("Movie");
 
                     b.Navigation("User");
                 });
